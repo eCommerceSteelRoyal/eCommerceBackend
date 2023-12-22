@@ -60,11 +60,11 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    private Date getExpiration(String token){
+    public Date getExpiration(String token){
         return getClaim(token, Claims::getExpiration);
     }
 
-    private boolean isTokenExpired(String token){
+    public boolean isTokenExpired(String token){
         return getExpiration(token).before(new Date());
     }
 }

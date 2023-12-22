@@ -20,7 +20,7 @@ public class DynamicSecurityService {
         http.
                 authorizeHttpRequests(authorizeRequests -> {
                     authorizeRequests
-                            .requestMatchers("/auth/**").permitAll();
+                            .requestMatchers("api/v1/users/auth/**").permitAll();
                     for (SecurityRule rule : rules) {
                         authorizeRequests.requestMatchers(HttpMethod.valueOf(rule.getHttpMethod()),
                                         rule.getPath())
