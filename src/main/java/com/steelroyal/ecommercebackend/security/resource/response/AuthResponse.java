@@ -20,5 +20,5 @@ public class AuthResponse {
     @JsonProperty("expires_in")
     LocalDateTime expiresIn;
     @JsonProperty("user")
-    UserResponse userResource;
+    UserAuthResponse userAuthResponse;
 }

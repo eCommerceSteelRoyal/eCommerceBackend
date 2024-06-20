@@ -5,6 +5,7 @@ import com.steelroyal.ecommercebackend.security.domain.service.UserService;
 import com.steelroyal.ecommercebackend.security.mapping.UserMapper;
 import com.steelroyal.ecommercebackend.security.resource.request.LoginRequest;
 import com.steelroyal.ecommercebackend.security.resource.request.RegisterRequest;
+import com.steelroyal.ecommercebackend.security.resource.request.UniqidRequest;
 import com.steelroyal.ecommercebackend.security.resource.response.AuthResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/auth", produces = "application/json")
+@RequestMapping(value = "/api/v1/auth", produces = "application/json")
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
@@ -25,17 +26,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request){
-        return ResponseEntity.ok(userMapper.toAuthResponse(userService.create(userMapper.toModel(request))));
+        return ResponseEntity.ok(userMapper.toAuthResponse(userService.register(userMapper.toModel(request))));
     }
 
-    @GetMapping("/demo")
-    public String getSuccessfully()
-    {
-        return "successfully GET";
-    }
-    @PostMapping("/demo")
-    public String postSuccessfully()
-    {
-        return "successfully POST";
+    @PostMapping("/verify")
+    public ResponseEntity<Boolean> verifyEmail(@RequestBody UniqidRequest uniqd){
+        return ResponseEntity.ok(userService.verifyEmail(userMapper.toModel(uniqd)));
     }
 }

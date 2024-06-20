@@ -9,7 +9,8 @@ public interface UserService {
     Page<User> getAll(Pageable pageable);
     User getMe();
     User authenticate(User user);
-    User create(User user);
+    User register(User user);
     User updateMe(User user);
+    Boolean verifyEmail(User user);
     Boolean deleteMe();
 }

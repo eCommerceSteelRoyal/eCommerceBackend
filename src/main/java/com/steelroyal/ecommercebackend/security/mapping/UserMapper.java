@@ -5,8 +5,10 @@ import com.steelroyal.ecommercebackend.security.domain.service.JwtService;
 import com.steelroyal.ecommercebackend.security.domain.service.RoleService;
 import com.steelroyal.ecommercebackend.security.resource.request.LoginRequest;
 import com.steelroyal.ecommercebackend.security.resource.request.RegisterRequest;
+import com.steelroyal.ecommercebackend.security.resource.request.UniqidRequest;
 import com.steelroyal.ecommercebackend.security.resource.request.UpdateUserRequest;
 import com.steelroyal.ecommercebackend.security.resource.response.AuthResponse;
+import com.steelroyal.ecommercebackend.security.resource.response.UserAuthResponse;
 import com.steelroyal.ecommercebackend.security.resource.response.UserResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class UserMapper {
-
     private final JwtService jwtService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
@@ -31,13 +32,16 @@ public class UserMapper {
         String token = jwtService.getToken(user);
         Date expirationTokenDate = jwtService.getExpiration(token);
         LocalDateTime expirationToken = expirationTokenDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        UserResponse userResource = toUserResponse(user);
 
         return AuthResponse.builder()
                 .accessToken(token)
                 .tokenType("bearer")
                 .expiresIn(expirationToken)
-                .userResource(userResource)
+                .userAuthResponse(
+                    UserAuthResponse.builder()
+                    .email(user.getEmail())
+                    .fullName(user.getFirstName()+" "+user.getLastName())
+                    .build())
                 .build();
     }
     
@@ -52,6 +56,12 @@ public class UserMapper {
                 .build();
     }
     
+    public User toModel(UniqidRequest request) {
+        return User.builder()
+                .uniqd(request.getUniqd())
+                .build();
+    }
+
     public User toModel(LoginRequest request){
         return User.builder()
                 .email(request.getEmail())
@@ -66,6 +76,7 @@ public class UserMapper {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(roleService.getByName("USER"))
+                .emailVerifiedAt(null)
                 .build();
     }
     

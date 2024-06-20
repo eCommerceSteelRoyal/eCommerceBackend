@@ -46,8 +46,16 @@ public class User implements UserDetails {
 
   @NotNull
   @NotBlank
+  @Column(name = "uniqd", nullable = false, unique = true)
+  String uniqd;
+
+  @NotNull
+  @NotBlank
   @Column(name = "password", nullable = false)
   String password;
+
+  @Column(name = "email_verified_at", nullable = true)
+  LocalDateTime emailVerifiedAt;
 
   @CreationTimestamp
   @Column(name = "created_at", nullable = false)

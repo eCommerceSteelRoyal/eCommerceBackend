@@ -38,7 +38,7 @@ public class DynamicSecurity {
         http
             .authorizeHttpRequests(authorizeRequests -> {
                 authorizeRequests
-                    .requestMatchers("/auth/**").permitAll();
+                    .requestMatchers("/api/v1/auth/**").permitAll();
 
                 for (Map.Entry<String, Map<String, Set<String>>> methodEntry : groupedRules.entrySet()) {
                     for (Map.Entry<String, Set<String>> pathEntry : methodEntry.getValue().entrySet()) {
